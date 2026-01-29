@@ -1,0 +1,24 @@
+name: Main DevOps Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Custom Action
+        uses: ./.github/actions/hello-check 
+      - name: Lint code (Mock)
+        run: echo "Uruchamiam lintowanie..."
+
+  publish:
+    needs: quality-check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/reusable-build.yml 
+    with:
+      image_name: devops-project-app
+    secrets: inherit

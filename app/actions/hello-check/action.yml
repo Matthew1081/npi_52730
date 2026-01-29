@@ -1,0 +1,14 @@
+name: 'File Integrity Checker'
+description: 'Sprawdza czy wymagane pliki istnieją i nie są puste'
+runs:
+  using: 'composite'
+  steps:
+    - name: Check Requirements
+      shell: bash
+      run: |
+        if [ -s requirements.txt ]; then
+          echo "Requirements file looks good!"
+        else
+          echo "Requirements file is missing or empty!"
+          exit 1
+        fi
